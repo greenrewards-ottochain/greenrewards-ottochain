@@ -21,11 +21,10 @@ const userSchema = new mongoose.Schema(
             unique: true,
             minlength: [8, "minimum password length is 8 character"],
         },
-        walletAddress:{
+        walletAddress: {
             type: String,
-            unique:true,
+            unique: true,
         },
-        
         twoFactorSecret: {
             type: String
 

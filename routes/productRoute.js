@@ -1,2 +1,5 @@
 const express= require("express")
-const router = express.Router()
+const route = express.Router()
+
+//route.get("/",)
+//route.post("/",)
