@@ -12,7 +12,7 @@ const generateCode = () => {
 
 module.exports.signUp_post = async (req, res) => {
     try {
-        const { name, email, password,} = req.body;
+        const { name, email, password, } = req.body;
 
         //check if user already exists
         const userEmail = await User.findOne({ email: req.body.email });
@@ -74,31 +74,31 @@ module.exports.signUp_post = async (req, res) => {
             data: user,
         });
     } catch (err) {
-        const errors =(err);
+        const errors = (err);
         res.status(400).json({ errors });
     }
-}; 
+};
 
-module.exports.saveWallet = async(req,res)=>{
-    const {userId,walletAddress}=req.body
-     
+module.exports.saveWallet = async (req, res) => {
+    const { userId, walletAddress } = req.body
+
     const isUserExist = await User.findById(userId)
-    if (!isUserExist){
+    if (!isUserExist) {
         res.status(404).json({
-            status:"fail",
+            status: "fail",
             message: "user not found"
         })
     }
-    const updateUserWallet = await User.findByIdAndUpdate(userId, {walletAddress})
-    if(!updateUserWallet){
+    const updateUserWallet = await User.findByIdAndUpdate(userId, { walletAddress })
+    if (!updateUserWallet) {
         res.status(403).json({
             status: "fail",
-            message:"not updated"
+            message: "not updated"
         })
     }
     res.status(200).json({
-        status:"success",
-        message:"wallet saved"
+        status: "success",
+        message: "wallet saved"
     })
 }
 
