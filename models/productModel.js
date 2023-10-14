@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
-  recyclableMatrial: {
+  recyclableMaterial: {
     type: String,
     required: true,
   },
@@ -33,6 +33,6 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-const Product = mongoose.model("project", productSchema);
+const Product = mongoose.model("Product", productSchema);
 
 module.exports = { Product };

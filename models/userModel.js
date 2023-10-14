@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema(
     twoFactorCodeExpires: {
       type: Date,
     },
+    isVerified: {
+      type: Boolean
+    }
   },
 
   {

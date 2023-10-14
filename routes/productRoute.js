@@ -7,9 +7,9 @@ const {
 } = require("../controllers/productController");
 const route = express.Router();
 
-route.get("/", getAllProduct);
+route.get("/products", getAllProduct);
 route.post("/listProduct", createProduct);
-route.put("/edit/:ProductId", editProduct);
-route.delete("/delete/:ProductId", deleteProduct);
+route.put("/edit/:productId", editProduct);
+route.delete("/delete/:productId", deleteProduct);
 
 module.exports = route;
