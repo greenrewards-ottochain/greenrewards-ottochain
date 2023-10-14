@@ -101,6 +101,56 @@ module.exports.saveWallet = async (req, res) => {
   });
 };
 
+module.exports.updateTwoFA = async (req, res) => {
+  const { email, faCode } = req.body;
+  try {
+    const isUserExist = User.findOne({ email });
+
+    if (!isUserExist) {
+      res.status(404).json({
+        status: "fail",
+        message: "can't find the user",
+      });
+    }
+
+    const isCorrectCode = User.findOne({
+      email,
+      twoFactorSecret: faCode,
+    });
+
+    if (!isCorrectCode) {
+      res.status(403).json({
+        status: "fail",
+        message: "wrong code",
+      });
+    }
+
+    const updateVerification = User.findOneAndUpdate({
+      email,
+      isVerified: true,
+    });
+
+    if (!updateVerification) {
+      res.status(403).json({
+        status: "fail",
+        message: "something went wrong, try again",
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "verified successfully",
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
+      status: "fail",
+      message: "something went wrong, try again",
+    });
+  }
+};
+
 module.exports.login = async (req, res) => {
   try {
     //find user
