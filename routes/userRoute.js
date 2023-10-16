@@ -8,7 +8,7 @@ const {
 const route = express.Router();
 
 route.post("/signUp", signUp_post);
-route.get("/login", login);
+route.post("/login", login);
 route.put("/update/fa", updateTwoFA);
 route.put("/update/wallet", saveWallet);
 //route.get("/logout", userController.signUp)
