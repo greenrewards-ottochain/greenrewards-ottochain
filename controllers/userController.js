@@ -2,6 +2,7 @@ const { User } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+require("dotenv").config()
 
 //function to generate 4 digit code
 const generateCode = () => {
@@ -86,8 +87,18 @@ module.exports.saveWallet = async (req, res) => {
       message: "user not found",
     });
   }
+//wallet address
+  const saltRounds = 10
+  bcrypt.hash(walletAddress,saltRounds, async (err, hash)=>{
+    if(err){
+      res.status(500).json({
+        status:"error",
+        message:"cannot hash wallet address"
+      })
+    }
+  })
   const updateUserWallet = await User.findByIdAndUpdate(userId, {
-    walletAddress,
+    walletAddress:hash,
   });
   if (!updateUserWallet) {
     res.status(403).json({
