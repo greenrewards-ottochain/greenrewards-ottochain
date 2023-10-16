@@ -29,7 +29,7 @@ module.exports.createProduct = async (req, res)=>{
     } = req.body;
 
     try {
-        const createdBy = req.userId;
+        const createdBy = req.user._id;
         //check if user exist
         const user = await User.findById(createdBy);
         //console.log(user)
@@ -40,7 +40,7 @@ module.exports.createProduct = async (req, res)=>{
             price,
             location,
             pictureUrl,
-            createdBy: req.userId,
+            createdBy: req.user.id,
         });
         res.status(201).json({
             status: "success",
@@ -50,7 +50,7 @@ module.exports.createProduct = async (req, res)=>{
         });
 
     } catch (error) {
-        console.error("Error creating project", error)
+        console.error("Error creating product", error)
         res.status(400).json({
             status: "fail",
             error: "cannot list product",
