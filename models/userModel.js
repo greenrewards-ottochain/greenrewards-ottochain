@@ -32,8 +32,21 @@ const userSchema = new mongoose.Schema(
       type: Date,
     },
     isVerified: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
+
+    role: {
+      type: String,
+      enum: ["seller", "buyer"],
+      default: "buyer",
+      required: false,
+      validate: {
+        validator: function (v) {
+          return /^(seller|buyer)$/.test(v);
+        },
+        message: "Invalid role value: {VALUE}",
+      },
+    },
   },
 
   {
