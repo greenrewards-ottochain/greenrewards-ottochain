@@ -41,7 +41,8 @@ module.exports.signUp_post = async (req, res) => {
 
     //send code to user's email
     const transporter = nodemailer.createTransport({
-      service: "smtp.ethereal.email",
+      service:"gmail", 
+      host:"smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
@@ -64,7 +65,7 @@ module.exports.signUp_post = async (req, res) => {
       subject: "Email Verification",
       html: `<h2>Thank you for registering with Green Reward</h2>
       <p>Your verification code is ${code}</p>
-      <p>This code will expire in 5 minutes</p>`,
+      <p>This code will expire in 5 minutes.</p>`,
     });
     res.status(201).json({
       status: "success",
@@ -87,6 +88,7 @@ module.exports.saveWallet = async (req, res) => {
       message: "user not found",
     });
   }
+
 //wallet address
   const saltRounds = 10
   bcrypt.hash(walletAddress,saltRounds, async (err, hash)=>{
