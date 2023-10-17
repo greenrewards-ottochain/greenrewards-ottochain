@@ -23,60 +23,60 @@ const requireAuth = async (req, res, next) => {
   }
 };
 
-// Middleware: sellers Authorization
-const authorizeSeller = async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
+// // Middleware: sellers Authorization
+// const authorizeSeller = async (req, res, next) => {
+//   const token = req.headers.authorization.split(" ")[1];
 
-  try {
-    if (token) {
-      const decodedToken = jwt.verify(token, secret);
-      // Attach user information to request object
-      req.user = decodedToken;
-    } else {
-      throw new Error("No token");
-    }
-    // Retrieve user information from the attached token
-    const user = await User.findById(req.user.id);
-    if (user.role !== "seller") {
-      return res.status(403).json({
-        message: "Only sellers can access this resource",
-      });
-    }
-    next();
-  } catch (error) {
-    console.error("Error checking admin authorization", error);
-    res.status(500).json({
-      message: "Internal server error",
-    });
-  }
-};
+//   try {
+//     if (token) {
+//       const decodedToken = jwt.verify(token, secret);
+//       // Attach user information to request object
+//       req.user = decodedToken;
+//     } else {
+//       throw new Error("No token");
+//     }
+//     // Retrieve user information from the attached token
+//     const user = await User.findById(req.user.id);
+//     if (user.role !== "seller") {
+//       return res.status(403).json({
+//         message: "Only sellers can access this resource",
+//       });
+//     }
+//     next();
+//   } catch (error) {
+//     console.error("Error checking admin authorization", error);
+//     res.status(500).json({
+//       message: "Internal server error",
+//     });
+//   }
+// };
 
-//Middleware: buyers Authorization
-const authorizeBuyer = async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
+// //Middleware: buyers Authorization
+// const authorizeBuyer = async (req, res, next) => {
+//   const token = req.headers.authorization.split(" ")[1];
 
-  try {
-    if (token) {
-      const decodedToken = jwt.verify(token, secret);
-      // Attach user information to request object
-      req.user = decodedToken;
-    } else {
-      throw new Error("No token");
-    }
-    // Retrieve user information from the attached token
-    const user = await User.findById(req.user.id);
-    if (user.role !== "buyer") {
-      return res.status(403).json({
-        message: "Only buyers can access this resource",
-      });
-    }
-    next();
-  } catch (error) {
-    console.error("Error checking buyer authorization", error);
-    res.status(500).json({
-      message: "Internal server error",
-    });
-  }
-};
+//   try {
+//     if (token) {
+//       const decodedToken = jwt.verify(token, secret);
+//       // Attach user information to request object
+//       req.user = decodedToken;
+//     } else {
+//       throw new Error("No token");
+//     }
+//     // Retrieve user information from the attached token
+//     const user = await User.findById(req.user.id);
+//     if (user.role !== "buyer") {
+//       return res.status(403).json({
+//         message: "Only buyers can access this resource",
+//       });
+//     }
+//     next();
+//   } catch (error) {
+//     console.error("Error checking buyer authorization", error);
+//     res.status(500).json({
+//       message: "Internal server error",
+//     });
+//   }
+// };
 
-module.exports = {requireAuth, authorizeSeller,authorizeBuyer};
+module.exports = {requireAuth};
