@@ -2,7 +2,7 @@ const { User } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
-require("dotenv").config()
+require("dotenv").config();
 
 //function to generate 4 digit code
 const generateCode = () => {
@@ -24,7 +24,6 @@ exports.getAllUsers = async (req, res) => {
     });
   }
 };
-
 
 module.exports.signUp_post = async (req, res) => {
   try {
@@ -57,13 +56,13 @@ module.exports.signUp_post = async (req, res) => {
 
     //send code to user's email
     const transporter = nodemailer.createTransport({
-      service:"gmail", 
-      host:"smtp.gmail.com",
+      service: "gmail",
+      host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD,
+        user: "greenrewards9@gmail.com",
+        pass: "slaldhjhovkqhdlm",
       },
     });
 
@@ -105,28 +104,29 @@ module.exports.saveWallet = async (req, res) => {
     });
   }
 
-//wallet address
-  const saltRounds = 10
-  bcrypt.hash(walletAddress,saltRounds, async (err, hash)=>{
-    if(err){
+  //wallet address
+  const saltRounds = 10;
+  bcrypt.hash(walletAddress, saltRounds, async (err, hash) => {
+    if (err) {
       res.status(500).json({
-        status:"error",
-        message:"cannot hash wallet address"
-      })
+        status: "error",
+        message: "cannot hash wallet address",
+      });
     }
-  })
-  const updateUserWallet = await User.findByIdAndUpdate(userId, {
-    walletAddress:hash,
-  });
-  if (!updateUserWallet) {
-    res.status(403).json({
-      status: "fail",
-      message: "not updated",
+
+    const updateUserWallet = await User.findByIdAndUpdate(userId, {
+      walletAddress: hash,
     });
-  }
-  res.status(200).json({
-    status: "success",
-    message: "wallet saved",
+    if (!updateUserWallet) {
+      res.status(403).json({
+        status: "fail",
+        message: "not updated",
+      });
+    }
+    res.status(200).json({
+      status: "success",
+      message: "wallet saved",
+    });
   });
 };
 
@@ -204,13 +204,15 @@ module.exports.login = async (req, res) => {
       });
     }
     // Check if 2FA code has expired or is invalid
-    if (user.twoFactorSecret !== req.body.code || 
-      user.twoFactorCodeExpires < Date.now()) 
+    if (
+      user.twoFactorSecret !== req.body.code ||
+      user.twoFactorCodeExpires < Date.now()
+    )
       console.log("Received 2FA Code:", req.body.code);
     console.log("User's 2FA Secret:", user.twoFactorSecret);
     console.log("Code Expiration Timestamp:", user.twoFactorCodeExpires);
 
-      {
+    {
       return res.status(400).json({
         status: "fail",
         message: "invalid code",
