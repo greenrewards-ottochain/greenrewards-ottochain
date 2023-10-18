@@ -10,6 +10,22 @@ const generateCode = () => {
   return code;
 };
 
+exports.getAllUsers = async (req, res) => {
+  try {
+    const result = await User.find();
+    res.status(200).json({
+      status: "success",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+};
+
+
 module.exports.signUp_post = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -188,27 +204,25 @@ module.exports.login = async (req, res) => {
       });
     }
     // Check if 2FA code has expired or is invalid
-    if (
-      user.twoFactorCodeExpires < Date.now() ||
-      user.twoFactorSecret !== req.body.code
-    ) {
-      // If the code has expired, you can generate a new one here
-      const newCode = generateCode(); // Assuming generateCode is a function that generates a new 4-digit code
-      user.twoFactorSecret = newCode;
-      user.twoFactorCodeExpires = Date.now() + 600000; // 10 minutes from now
-      await user.save(); // Save the updated user with the new code
+    if (user.twoFactorSecret !== req.body.code || 
+      user.twoFactorCodeExpires < Date.now()) 
+      console.log("Received 2FA Code:", req.body.code);
+    console.log("User's 2FA Secret:", user.twoFactorSecret);
+    console.log("Code Expiration Timestamp:", user.twoFactorCodeExpires);
 
+      {
       return res.status(400).json({
         status: "fail",
-        message: "invalid code, a new code has been sent to your email",
+        message: "invalid code",
       });
     }
+
     //if password is valid create token
     const token = jwt.sign({ _id: user._id }, process.env.MY_SECRET, {
       expiresIn: "7days",
     });
-    //verify token
 
+    //verify token
     const verified = jwt.verify(token, process.env.MY_SECRET);
     //send token to client
     res.cookie("jwt", token, {
