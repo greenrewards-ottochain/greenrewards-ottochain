@@ -29,7 +29,7 @@ module.exports.createProduct = async (req, res)=>{
     } = req.body;
 
     try {
-        const createdBy = req.user._id;
+        const createdBy = req.userId;
         //check if user exist
         const user = await User.findById(createdBy);
         //console.log(user)
@@ -40,7 +40,7 @@ module.exports.createProduct = async (req, res)=>{
             price,
             location,
             pictureUrl,
-            createdBy: req.user.id,
+            createdBy: req.userId,
         });
         res.status(201).json({
             status: "success",
@@ -59,7 +59,7 @@ module.exports.createProduct = async (req, res)=>{
 }
 
 module.exports.editProduct = async (req, res) => {
-    
+
 }
 module.exports.deleteProduct = async (req, res) => {
 
