@@ -61,8 +61,8 @@ module.exports.signUp_post = async (req, res) => {
       port: 587,
       secure: false,
       auth: {
-        user: "greenrewards9@gmail.com",
-        pass: "slaldhjhovkqhdlm",
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
       },
     });
 
