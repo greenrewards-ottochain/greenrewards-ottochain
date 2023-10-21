@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/userModel");
 require("dotenv").config();
-const secret = process.env.MY_SECRET;
+const secret = process.env.SECRET;
 
 // Middleware: Require Authentication
 const requireAuth = async (req, res, next) => {

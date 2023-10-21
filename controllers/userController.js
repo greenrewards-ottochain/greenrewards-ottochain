@@ -4,6 +4,12 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
+// const maxAge = 3 * 24 * 60 * 60;
+// const createToken = (id, role) => {
+//   return jwt.sign({ id, role }, secret, {
+//     expiresIn: maxAge,
+//   });
+// };
 //function to generate 4 digit code
 const generateCode = () => {
   const code = Math.floor(1000 + Math.random() * 9000);
@@ -53,7 +59,7 @@ module.exports.signUp_post = async (req, res) => {
       twoFactorSecret: code,
       twoFactorCodeExpires: Date.now() + 600000,
     });
-
+    
     //send code to user's email
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -203,40 +209,21 @@ module.exports.login = async (req, res) => {
         message: "invalid password",
       });
     }
-    // Check if 2FA code has expired or is invalid
-    if (
-      user.twoFactorSecret !== req.body.code ||
-      user.twoFactorCodeExpires < Date.now()
-    )
-      console.log("Received 2FA Code:", req.body.code);
-    console.log("User's 2FA Secret:", user.twoFactorSecret);
-    console.log("Code Expiration Timestamp:", user.twoFactorCodeExpires);
-
-    {
-      return res.status(400).json({
-        status: "fail",
-        message: "invalid code",
-      });
-    }
-
+    
     //if password is valid create token
-    const token = jwt.sign({ _id: user._id }, process.env.MY_SECRET, {
+    const token = jwt.sign({ id: user.id }, process.env.SECRET, {
       expiresIn: "7days",
     });
 
-    //verify token
-    const verified = jwt.verify(token, process.env.MY_SECRET);
-    //send token to client
-    res.cookie("jwt", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-    });
     res.status(200).json({
       status: "success",
       message: "user logged in successfully",
-      data: verified,
+      data: token
     });
   } catch (err) {
+    console.log(err)
     const errors = err;
     res.status(400).json({ errors });
+
   }
 };

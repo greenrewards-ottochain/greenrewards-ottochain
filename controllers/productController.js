@@ -24,6 +24,7 @@ module.exports.createProduct = async (req, res) => {
     req.body;
 
   try {
+    console.log(req.user);
     const createdBy = req.user.id;
     //check if user exist
     const user = await User.findById(createdBy);
@@ -43,11 +44,11 @@ module.exports.createProduct = async (req, res) => {
         products,
       },
     });
-  } catch (error) {
-    console.error("Error creating product", error);
+  } catch (err) {
+    console.error(err);
     res.status(400).json({
       status: "fail",
-      error: "cannot list product",
+      error: err.message,
     });
   }
 };

@@ -10,11 +10,11 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   volume: {
-    type: String,
+    type: Number,
     required: true,
   },
   price: {
-    type: String,
+    type: Number,
     required: false,
   },
   location: {

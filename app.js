@@ -15,6 +15,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({ extended: false }));
 app.use(cookieParser());
 
+
+//debugging middleware for looging cookies
+app.use((req, res, next) => {
+  next();
+});
+
 //   Api Health Checker
 app.get("/api/healthchecker", (req, res) => {
   res.status(200).json({
