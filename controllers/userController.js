@@ -1,15 +1,10 @@
-const { User } = require("../models/userModel");
+const {User}  = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-// const maxAge = 3 * 24 * 60 * 60;
-// const createToken = (id, role) => {
-//   return jwt.sign({ id, role }, secret, {
-//     expiresIn: maxAge,
-//   });
-// };
+
 //function to generate 4 digit code
 const generateCode = () => {
   const code = Math.floor(1000 + Math.random() * 9000);
@@ -94,6 +89,7 @@ module.exports.signUp_post = async (req, res) => {
       data: user,
     });
   } catch (err) {
+    console.log(err)
     const errors = err;
     res.status(400).json({ errors });
   }
@@ -212,7 +208,7 @@ module.exports.login = async (req, res) => {
     
     //if password is valid create token
     const token = jwt.sign({ id: user.id }, process.env.SECRET, {
-      expiresIn: "7days",
+      expiresIn: "15m",
     });
 
     res.status(200).json({
