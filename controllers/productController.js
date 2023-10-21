@@ -1,25 +1,22 @@
 const { Product } = require("../models/productModel");
 const { User } = require("../models/userModel");
 
-module.exports.getAllProduct = async (req, res) => {
+exports.getAllProduct = async (req, res) => {
   try {
-    const products = await Product.find();
+    const result = await Product.find();
     res.status(200).json({
       status: "success",
-      results: products.length,
-      data: {
-        products,
-      },
+      data: result,
     });
   } catch (error) {
     res.status(400).json({
       status: "fail",
-      error: "cannot get products",
+      error: error.message,
     });
   }
 };
 
-module.exports.createProduct = async (req, res) => {
+exports.createProduct = async (req, res) => {
   const { recyclableMaterial, quantity, volume, price, location, pictureUrl } =
     req.body;
 
@@ -53,7 +50,7 @@ module.exports.createProduct = async (req, res) => {
   }
 };
 
-module.exports.editProduct = async (req, res) => {
+exports.editProduct = async (req, res) => {
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!",
@@ -77,7 +74,7 @@ module.exports.editProduct = async (req, res) => {
   });
 };
 
-module.exports.deleteProduct = async (req, res) => {
+exports.deleteProduct = async (req, res) => {
   Product.findByIdAndDelete(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
