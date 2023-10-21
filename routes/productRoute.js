@@ -8,7 +8,7 @@ const {
 const { requireAuth } = require("../middleware/auth");
 const route = express.Router();
 
-route.get("/products", getAllProduct);
+route.get("/allProducts", getAllProduct);
 route.post("/listProduct", requireAuth, createProduct);
 route.put("/edit/:productId", editProduct);
 route.delete("/delete/:productId", deleteProduct);
