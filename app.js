@@ -37,8 +37,8 @@ app.use("/products", productRoute);
 
 //Database connection
 const dbURI = process.env.MONGO_URI;
-mongoose
-  .connect(dbURI, {
+mongoose.connect(dbURI, 
+  {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
