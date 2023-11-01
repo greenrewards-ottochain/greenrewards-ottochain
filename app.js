@@ -16,7 +16,7 @@ app.use(express.json({ extended: false }));
 app.use(cookieParser());
 
 
-//debugging middleware for looging cookies
+//debugging middleware for logging cookies
 app.use((req, res, next) => {
   next();
 });
